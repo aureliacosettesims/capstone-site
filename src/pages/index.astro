@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all projects and sort by order
+const allProjects = await getCollection('projects');
+const sortedProjects = allProjects.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+
+// Categories defined in requirements
+const categories = [
+  { label: 'All', slug: 'all' },
+  { label: 'Costume Crafts', slug: 'costume-crafts' },
+  { label: 'Printmaking', slug: 'printmaking' },
+  { label: 'Puppetry', slug: 'puppetry' },
+  { label: 'Sculpture', slug: 'sculpture' },
+  { label: 'Traditional Painting & Drawing', slug: 'traditional-painting-drawing' },
+];
+
+// Calculate counts for each category
+const counts: Record<string, number> = {
+  all: sortedProjects.length,
+};
+
+categories.slice(1).forEach((cat) => {
+  const c = sortedProjects.filter(
+    (p) => p.data.category.toLowerCase().replace(/[^a-z0-9]+/g, '-') === cat.slug
+  ).length;
+  counts[cat.slug] = c;
+});
+---
+
+<BaseLayout
+  title="Aurelia Cosette Sims — Craft Artisan & Visual Artist | Portfolio"
+  description="Explore the visual arts portfolio of Aurelia Cosette Sims: Costume crafts, puppetry fabrication, printmaking, welding, woodworking, and traditional arts at Northern Arizona University."
+  currentPath="/"
+>
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12 pb-10 sm:pt-16 sm:pb-14">
+    <div class="max-w-3xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-paper-200 text-paper-900 mb-4 border border-artisan-300">
+        <span class="w-2 h-2 rounded-full bg-artisan-600 animate-pulse"></span>
+        Northern Arizona University · Flagstaff, AZ
+      </div>
+      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-paper-900 font-medium tracking-tight leading-[1.15]">
+        Craft Artisan &amp; Visual Artist
+      </h1>
+      <p class="mt-5 text-base sm:text-lg text-paper-700 leading-relaxed font-sans font-light max-w-2xl">
+        Specializing in theatrical costume crafts, articulated puppetry fabrication, fine printmaking, metallurgical sculpture, and traditional studio arts.
+      </p>
+    </div>
+  </section>
+
+  <!-- Gallery Section & Interactive Category Filter -->
+  <section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-24">
+    <!-- Filter Tabs Bar -->
+    <div class="sticky top-20 sm:top-24 z-30 bg-paper-100/95 backdrop-blur-md pt-4 pb-6 border-b border-artisan-300 mb-10 transition-colors">
+      <div class="flex items-center justify-between gap-4 overflow-x-auto no-scrollbar py-1" role="tablist" aria-label="Portfolio Categories">
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          {categories.map((cat, index) => {
+            const isAll = cat.slug === 'all';
+            return (
+              <button
+                type="button"
+                role="tab"
+                id={`tab-${cat.slug}`}
+                data-category-filter={cat.slug}
+                aria-selected={isAll ? 'true' : 'false'}
+                aria-controls="projects-grid"
+                tabindex={isAll ? 0 : -1}
+                class={`category-tab inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-sans tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 ${
+                  isAll
+                    ? 'bg-paper-900 text-paper-50 shadow-xs font-medium border border-paper-900'
+                    : 'bg-paper-200/90 text-paper-800 hover:bg-paper-300 hover:text-paper-900 border border-artisan-300/60 hover:border-artisan-400'
+                }`}
+              >
+                <span>{cat.label}</span>
+                <span class="tab-count px-1.5 py-0.2 rounded-full text-[10px] font-mono transition-colors opacity-90">
+                  {counts[cat.slug] || 0}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+
+    <!-- Responsive Projects Grid -->
+    <div
+      id="projects-grid"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 transition-opacity duration-200"
+      role="tabpanel"
+      aria-live="polite"
+    >
+      {sortedProjects.map((project) => (
+        <ProjectCard
+          slug={project.id}
+          title={project.data.title}
+          category={project.data.category}
+          medium={project.data.medium}
+          year={project.data.year}
+          coverImage={project.data.coverImage}
+          order={project.data.order}
+        />
+      ))}
+    </div>
+
+    <!-- Empty State (Shown if filter matches no cards) -->
+    <div id="no-projects" class="hidden text-center py-20 bg-paper-50 rounded-xl border border-dashed border-artisan-300">
+      <p class="font-serif text-2xl text-paper-800">No projects found in this category.</p>
+      <button
+        type="button"
+        id="reset-filter-btn"
+        class="mt-4 px-5 py-2.5 text-xs uppercase tracking-wider font-medium text-paper-50 bg-paper-900 hover:bg-artisan-700 rounded-lg transition-colors shadow-xs"
+      >
+        View All Projects
+      </button>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  function setupFilter() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.category-tab');
+    const cards = document.querySelectorAll<HTMLElement>('.project-card');
+    const noProjects = document.getElementById('no-projects');
+    const resetBtn = document.getElementById('reset-filter-btn');
+
+    if (!tabs.length || !cards.length) return;
+
+    function applyFilter(categorySlug: string) {
+      let visibleCount = 0;
+
+      // Update Tab Styles
+      tabs.forEach((tab) => {
+        const isCurrent = tab.getAttribute('data-category-filter') === categorySlug;
+        tab.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+        tab.tabIndex = isCurrent ? 0 : -1;
+
+        if (isCurrent) {
+          tab.className = 'category-tab inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-sans tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 bg-paper-900 text-paper-50 shadow-xs font-medium border border-paper-900';
+        } else {
+          tab.className = 'category-tab inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-sans tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 bg-paper-200/90 text-paper-800 hover:bg-paper-300 hover:text-paper-900 border border-artisan-300/60 hover:border-artisan-400';
+        }
+      });
+
+      // Filter Cards
+      cards.forEach((card) => {
+        const cardCategory = card.getAttribute('data-category');
+        if (categorySlug === 'all' || cardCategory === categorySlug) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      // Show or hide empty message
+      if (noProjects) {
+        if (visibleCount === 0) noProjects.classList.remove('hidden');
+        else noProjects.classList.add('hidden');
+      }
+
+      // Update URL search query / hash smoothly
+      const url = new URL(window.location.href);
+      if (categorySlug === 'all') {
+        url.searchParams.delete('category');
+      } else {
+        url.searchParams.set('category', categorySlug);
+      }
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    // Attach click events
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const cat = tab.getAttribute('data-category-filter') || 'all';
+        applyFilter(cat);
+      });
+
+      // Keyboard arrow navigation between tabs
+      tab.addEventListener('keydown', (e) => {
+        const tabList = Array.from(tabs);
+        const index = tabList.indexOf(tab);
+        let nextIndex = index;
+
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          nextIndex = (index + 1) % tabList.length;
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          nextIndex = (index - 1 + tabList.length) % tabList.length;
+        }
+
+        if (nextIndex !== index) {
+          e.preventDefault();
+          const targetTab = tabList[nextIndex];
+          targetTab.focus();
+          const cat = targetTab.getAttribute('data-category-filter') || 'all';
+          applyFilter(cat);
+        }
+      });
+    });
+
+    resetBtn?.addEventListener('click', () => applyFilter('all'));
+
+    // Check URL search parameters on initial load
+    const params = new URLSearchParams(window.location.search);
+    const initialCategory = params.get('category');
+    if (initialCategory) {
+      applyFilter(initialCategory);
+    }
+  }
+
+  setupFilter();
+  document.addEventListener('astro:page-load', setupFilter);
+</script>
+
+<style>
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+</style>

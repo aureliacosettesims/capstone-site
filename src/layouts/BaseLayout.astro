@@ -1,0 +1,105 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  currentPath?: string;
+}
+
+const {
+  title = "Aurelia Cosette Sims — Craft Artisan & Visual Artist",
+  description = "Portfolio of Aurelia Cosette Sims: Craft artisan and visual artist at Northern Arizona University focusing on costume crafts, puppetry fabrication, printmaking, welding, and sculpture.",
+  image = "/images/about/aurelia-portrait.webp",
+  currentPath = Astro.url.pathname,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://aureliacosette.pages.dev');
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Aurelia Cosette Sims" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <!-- Google Fonts Preconnect & Stylesheet: Cormorant Garamond + Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style is:global>
+      :root {
+        --color-paper: #F4EFE6;
+        --color-surface: #FDFCF9;
+        --color-ink: #2D241E;
+        --color-brown-accent: #8C6D53;
+        --color-brown-border: #D3C1AD;
+        --color-brown-subtle: #DFD4C3;
+      }
+      ::selection {
+        background-color: #D3C1AD;
+        color: #2D241E;
+      }
+      /* Custom fine artisan scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #F4EFE6;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #D3C1AD;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #A68A72;
+      }
+    </style>
+  </head>
+  <body class="bg-paper-100 text-paper-900 font-sans antialiased selection:bg-paper-300 selection:text-paper-900 min-h-screen flex flex-col">
+    <!-- Skip to main content for accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-paper-900 text-paper-50 px-4 py-2 rounded text-sm font-medium shadow-lg outline-none"
+    >
+      Skip to content
+    </a>
+
+    <Header currentPath={currentPath} />
+
+    <main id="main-content" class="flex-grow">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

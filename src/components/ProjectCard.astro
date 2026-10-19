@@ -1,0 +1,68 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  category: string;
+  medium: string;
+  year: number;
+  coverImage: string;
+  order?: number;
+}
+
+const { slug, title, category, medium, year, coverImage, order = 10 } = Astro.props;
+
+// Category slug for filtering
+const categorySlug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+
+<article
+  class="project-card group flex flex-col bg-paper-50 rounded-lg overflow-hidden border border-artisan-300/80 hover:border-artisan-500 hover:shadow-md transition-all duration-300"
+  data-category={categorySlug}
+  data-title={title.toLowerCase()}
+>
+  <a
+    href={`/work/${slug}`}
+    class="flex flex-col h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 rounded-lg"
+  >
+    <!-- Image Container -->
+    <div class="relative w-full aspect-[4/3] bg-paper-200 overflow-hidden">
+      <img
+        src={coverImage}
+        alt={`${title} — ${medium} by Aurelia Cosette Sims`}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover object-center transform transition-transform duration-500 ease-out group-hover:scale-105"
+      />
+      <!-- Subtle warm brown vignette for depth -->
+      <div class="absolute inset-0 bg-gradient-to-t from-paper-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+
+      <!-- Category Pill (Overlay top-left) -->
+      <div class="absolute top-3 left-3">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium bg-paper-50/95 text-paper-900 border border-artisan-300/90 backdrop-blur-sm shadow-2xs tracking-wide">
+          {category}
+        </span>
+      </div>
+
+
+    </div>
+
+    <!-- Content / Card Details -->
+    <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between bg-paper-50">
+      <div>
+        <h3 class="font-serif text-xl sm:text-2xl text-paper-900 font-medium tracking-tight group-hover:text-artisan-700 transition-colors">
+          {title}
+        </h3>
+        <p class="text-xs sm:text-sm text-paper-600 font-sans mt-1 line-clamp-1">
+          {medium}
+        </p>
+      </div>
+
+      <div class="mt-4 pt-4 border-t border-paper-200 flex items-center justify-between text-xs text-paper-600 font-sans">
+        <span class="text-paper-600 group-hover:text-paper-900 transition-colors font-medium">View Project Details</span>
+        <svg class="w-4 h-4 text-artisan-500 group-hover:text-paper-900 transform group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+        </svg>
+      </div>
+    </div>
+  </a>
+</article>

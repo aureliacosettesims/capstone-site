@@ -1,0 +1,98 @@
+backend:
+  name: github
+  repo: aureliacosettesims/capstone-site
+  branch: main
+  base_url: https://capstone-auth.aurelia-c-sims.workers.dev
+  auth_endpoint: auth
+
+# Enable local backend development mode (allows CMS editing during local dev)
+local_backend: true
+
+media_folder: "public/images/projects"
+public_folder: "/images/projects"
+
+site_url: "https://aureliacosettesims.com"
+display_url: "https://aureliacosettesims.com"
+logo_url: "/images/about/aurelia-portrait.webp"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    extension: "md"
+    editor:
+      preview: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["Costume Crafts", "Puppetry", "Printmaking", "Sculpture", "Traditional Painting & Drawing"] }
+      - { label: "Medium", name: "medium", widget: "string" }
+      - { label: "Year", name: "year", widget: "number", value_type: "int" }
+      - { label: "Venue / Institution", name: "venue", widget: "string", required: false }
+      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - { label: "Additional Gallery Images", name: "images", widget: "list", field: { label: "Image", name: "image", widget: "image" }, required: false }
+      - { label: "Materials Used", name: "materials", widget: "list", field: { label: "Material", name: "material", widget: "string" } }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 10 }
+      - { label: "Featured Project", name: "featured", widget: "boolean", default: false }
+      - { label: "Short Summary Statement", name: "statement", widget: "text", required: false }
+      - { label: "Detailed Statement / Markdown Body", name: "body", widget: "markdown" }
+
+  - name: "resume"
+    label: "Resume & Credits"
+    files:
+      - label: "Resume Content"
+        name: "resume_data"
+        file: "src/data/resume.json"
+        format: "json"
+        fields:
+          - { label: "Artist Name", name: "name", widget: "string" }
+          - { label: "Title / Profession", name: "title", widget: "string" }
+          - { label: "Location", name: "location", widget: "string" }
+          - { label: "Email Address", name: "email", widget: "string" }
+          - { label: "PDF Resume Link", name: "pdfUrl", widget: "string" }
+          - label: "Education"
+            name: "education"
+            widget: "object"
+            fields:
+              - { label: "Institution", name: "institution", widget: "string" }
+              - { label: "Location", name: "location", widget: "string" }
+              - { label: "Degree", name: "degree", widget: "string" }
+              - { label: "Majors", name: "majors", widget: "list", field: { label: "Major", name: "major", widget: "string" } }
+              - { label: "Expected Graduation", name: "expectedGraduation", widget: "string" }
+              - { label: "Notes", name: "notes", widget: "text" }
+          - label: "Theatrical Credits by Year"
+            name: "theatricalCredits"
+            widget: "list"
+            fields:
+              - { label: "Year", name: "year", widget: "string" }
+              - label: "Productions"
+                name: "productions"
+                widget: "list"
+                fields:
+                  - { label: "Role", name: "role", widget: "string" }
+                  - { label: "Production Title", name: "production", widget: "string" }
+                  - { label: "Year", name: "year", widget: "string" }
+                  - { label: "Venue / Company", name: "venue", widget: "string" }
+                  - { label: "Production Details / Craft Notes", name: "details", widget: "string" }
+
+  - name: "about"
+    label: "About Artist"
+    files:
+      - label: "About Page Content"
+        name: "about_data"
+        file: "src/data/about.json"
+        format: "json"
+        fields:
+          - { label: "Artist Name", name: "name", widget: "string" }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Portrait Image", name: "portraitImage", widget: "image" }
+          - { label: "Portrait Alt Text", name: "portraitAlt", widget: "string" }
+          - { label: "Location", name: "location", widget: "string" }
+          - { label: "Institution", name: "institution", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Instagram URL", name: "instagramUrl", widget: "string" }
+          - { label: "Instagram Handle", name: "instagramHandle", widget: "string" }
+          - { label: "Biography Paragraphs", name: "bio", widget: "list", field: { label: "Paragraph", name: "p", widget: "text" } }

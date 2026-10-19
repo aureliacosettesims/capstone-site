@@ -1,0 +1,256 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  // Sort projects so next/prev navigation flows logically
+  const sorted = projects.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+
+  return sorted.map((project, index) => {
+    const prevProject = index > 0 ? sorted[index - 1] : sorted[sorted.length - 1];
+    const nextProject = index < sorted.length - 1 ? sorted[index + 1] : sorted[0];
+
+    return {
+      params: { slug: project.id },
+      props: { project, prevProject, nextProject },
+    };
+  });
+}
+
+const { project, prevProject, nextProject } = Astro.props;
+const { Content } = await render(project);
+
+// Prepare images for lightbox
+const galleryImages = (project.data.images && project.data.images.length > 0)
+  ? project.data.images
+  : [project.data.coverImage];
+
+const lightboxItems = galleryImages.map((src, i) => ({
+  src,
+  alt: `${project.data.title} - View ${i + 1}`,
+  caption: `${project.data.title} (${project.data.medium}, ${project.data.year})`,
+}));
+
+const categorySlug = project.data.category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+
+<BaseLayout
+  title={`${project.data.title} — ${project.data.medium} | Aurelia Cosette Sims`}
+  description={project.data.statement || `${project.data.title}: ${project.data.medium} (${project.data.year}) by Aurelia Cosette Sims at Northern Arizona University.`}
+  image={project.data.coverImage}
+  currentPath="/work"
+>
+  <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-10 sm:py-16">
+    <!-- Breadcrumb / Back Link -->
+    <nav aria-label="Breadcrumb" class="mb-8 sm:mb-12">
+      <a
+        href={`/?category=${categorySlug}`}
+        class="inline-flex items-center gap-2 text-xs sm:text-sm font-sans text-paper-600 hover:text-paper-900 transition-colors py-1 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 rounded"
+      >
+        <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        <span>Back to <strong class="font-medium text-paper-900">{project.data.category}</strong></span>
+      </a>
+    </nav>
+
+    <!-- Project Header -->
+    <header class="mb-10 sm:mb-14">
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-paper-200 text-paper-900 border border-artisan-300">
+          {project.data.category}
+        </span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-mono font-medium bg-paper-300 text-paper-900">
+          {project.data.year}
+        </span>
+        {project.data.venue && (
+          <span class="text-xs text-paper-600 font-sans">
+            · {project.data.venue}
+          </span>
+        )}
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl text-paper-900 font-medium tracking-tight">
+        {project.data.title}
+      </h1>
+      <p class="mt-3 text-lg sm:text-xl text-paper-600 font-sans font-light">
+        {project.data.medium}
+      </p>
+    </header>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <!-- Left Column: Gallery / Photo Grid (7 cols) -->
+      <div class="lg:col-span-7 space-y-6">
+        <!-- Hero / Primary Cover Image -->
+        <div class="group relative rounded-xl overflow-hidden bg-paper-200 border border-artisan-300 shadow-sm cursor-zoom-in">
+          <a
+            href={galleryImages[0]}
+            data-lightbox-trigger
+            data-lightbox-index="0"
+            class="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 rounded-xl"
+            aria-label="View full resolution image"
+          >
+            <img
+              src={galleryImages[0]}
+              alt={`${project.data.title} primary view`}
+              loading="eager"
+              decoding="async"
+              class="w-full h-auto object-cover max-h-[75vh] mx-auto transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div class="absolute bottom-3 right-3 bg-paper-900/80 text-paper-50 text-xs px-2.5 py-1 rounded-md backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+              </svg>
+              Click to Enlarge
+            </div>
+          </a>
+        </div>
+
+        <!-- Additional Photo Grid (if project has multiple images) -->
+        {galleryImages.length > 1 && (
+          <div class="pt-2">
+            <h3 class="text-xs font-mono uppercase tracking-wider text-paper-600 mb-3 font-semibold">
+              Gallery &amp; Process Views ({galleryImages.length})
+            </h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {galleryImages.map((imgSrc, idx) => (
+                <div class="group relative rounded-lg overflow-hidden bg-paper-200 border border-artisan-300 aspect-square cursor-zoom-in shadow-2xs">
+                  <a
+                    href={imgSrc}
+                    data-lightbox-trigger
+                    data-lightbox-index={idx.toString()}
+                    class="block w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 rounded-lg"
+                    aria-label={`View photo ${idx + 1} of ${galleryImages.length}`}
+                  >
+                    <img
+                      src={imgSrc}
+                      alt={`${project.data.title} view ${idx + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div class="absolute inset-0 bg-paper-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <svg class="w-6 h-6 text-white drop-shadow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                      </svg>
+                    </div>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Right Column: Materials & Artist Statement (5 cols) -->
+      <aside class="lg:col-span-5 space-y-8 sticky top-28">
+        <!-- Materials Used Card -->
+        <div class="bg-paper-50 p-6 sm:p-7 rounded-xl border border-artisan-300 shadow-2xs">
+          <h2 class="text-xs font-mono uppercase tracking-widest text-paper-700 font-semibold mb-4">
+            Materials &amp; Technique
+          </h2>
+          <ul class="flex flex-wrap gap-2">
+            {project.data.materials.map((mat) => (
+              <li class="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-sans bg-paper-200 text-paper-900 border border-artisan-300/80 font-medium">
+                {mat}
+              </li>
+            ))}
+          </ul>
+
+          <div class="mt-6 pt-5 border-t border-paper-200 grid grid-cols-2 gap-4 text-xs">
+            <div>
+              <span class="block text-paper-600 font-mono uppercase">Category</span>
+              <span class="font-medium text-paper-900 mt-0.5 block">{project.data.category}</span>
+            </div>
+            <div>
+              <span class="block text-paper-600 font-mono uppercase">Year</span>
+              <span class="font-medium text-paper-900 mt-0.5 block">{project.data.year}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Artist Statement / Narrative -->
+        <div class="prose prose-paper max-w-none">
+          <h2 class="font-serif text-2xl text-paper-900 font-medium mb-3">
+            Artist Statement
+          </h2>
+          <div class="text-sm sm:text-base text-paper-800 leading-relaxed font-sans space-y-4">
+            <Content />
+          </div>
+        </div>
+
+        <!-- Contact / Inquire Action -->
+        <div class="pt-4 border-t border-artisan-300">
+          <a
+            href={`/about?piece=${encodeURIComponent(project.data.title)}#contact`}
+            class="inline-flex items-center gap-2 text-xs font-sans uppercase tracking-wider font-semibold text-paper-900 hover:text-artisan-700 transition-colors py-1 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 rounded"
+          >
+            <span>Inquire about this piece</span>
+            <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Navigation Footer: Previous & Next Project -->
+    <nav aria-label="Project Navigation" class="mt-20 pt-12 border-t border-artisan-300">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+        <!-- Previous Project Link -->
+        <a
+          href={`/work/${prevProject.id}`}
+          class="group p-5 rounded-lg border border-artisan-300 bg-paper-50 hover:bg-paper-200/60 transition-all flex items-center gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800"
+        >
+          <div class="w-16 h-16 rounded overflow-hidden bg-paper-200 shrink-0 border border-artisan-300">
+            <img
+              src={prevProject.data.coverImage}
+              alt=""
+              loading="lazy"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+            />
+          </div>
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-wider text-paper-600 block">
+              &larr; Previous Project
+            </span>
+            <h4 class="font-serif text-lg text-paper-900 font-medium group-hover:text-artisan-700 transition-colors">
+              {prevProject.data.title}
+            </h4>
+            <span class="text-xs text-paper-600 block">{prevProject.data.category}</span>
+          </div>
+        </a>
+
+        <!-- Next Project Link -->
+        <a
+          href={`/work/${nextProject.id}`}
+          class="group p-5 rounded-lg border border-artisan-300 bg-paper-50 hover:bg-paper-200/60 transition-all flex items-center justify-between gap-4 text-right sm:flex-row-reverse focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800"
+        >
+          <div class="w-16 h-16 rounded overflow-hidden bg-paper-200 shrink-0 border border-artisan-300">
+            <img
+              src={nextProject.data.coverImage}
+              alt=""
+              loading="lazy"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+            />
+          </div>
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-wider text-paper-600 block">
+              Next Project &rarr;
+            </span>
+            <h4 class="font-serif text-lg text-paper-900 font-medium group-hover:text-artisan-700 transition-colors">
+              {nextProject.data.title}
+            </h4>
+            <span class="text-xs text-paper-600 block">{nextProject.data.category}</span>
+          </div>
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Interactive Lightbox Component -->
+  <Lightbox images={lightboxItems} />
+</BaseLayout>

@@ -1,0 +1,267 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import aboutData from '../data/about.json';
+---
+
+<BaseLayout
+  title="About Aurelia Cosette Sims — Craft Artisan & Visual Artist"
+  description="Biography and studio practice of Aurelia Cosette Sims, craft artisan and visual artist studying Technical Theater and Sculpture at Northern Arizona University."
+  image={aboutData.portraitImage}
+  currentPath="/about"
+>
+  <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-20">
+    <!-- Split Layout Grid: Portrait on Left, Bio & Details on Right -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      
+      <!-- Left Column: Artist Portrait & Quick Details (5 cols) -->
+      <aside class="lg:col-span-5 space-y-8 lg:sticky lg:top-28">
+        <!-- Portrait Card -->
+        <div class="bg-paper-50 p-4 sm:p-5 rounded-2xl border border-artisan-300 shadow-sm">
+          <div class="relative rounded-xl overflow-hidden bg-paper-200 aspect-[3/4]">
+            <img
+              src={aboutData.portraitImage}
+              alt={aboutData.portraitAlt}
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover object-top"
+            />
+          </div>
+          <div class="mt-4 px-2 text-center sm:text-left">
+            <h2 class="font-serif text-xl text-paper-900 font-medium">
+              {aboutData.name}
+            </h2>
+            <p class="text-xs uppercase tracking-widest text-artisan-600 font-mono mt-0.5 font-medium">
+              {aboutData.title}
+            </p>
+          </div>
+        </div>
+
+        <!-- Studio Info Card -->
+        <div class="bg-paper-50 p-6 rounded-xl border border-artisan-300 shadow-2xs space-y-4">
+          <h3 class="text-xs font-mono uppercase tracking-widest text-paper-600 font-semibold">
+            Studio Info
+          </h3>
+
+          <div class="space-y-3 text-sm text-paper-700 font-sans">
+            <!-- Location -->
+            <div class="flex items-start gap-3">
+              <svg class="w-4 h-4 text-artisan-600 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <div>
+                <span class="block text-xs text-paper-600 uppercase font-mono">Location</span>
+                <span class="text-paper-900 font-medium">{aboutData.location}</span>
+              </div>
+            </div>
+
+            <!-- Institution -->
+            <div class="flex items-start gap-3">
+              <svg class="w-4 h-4 text-artisan-600 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+              </svg>
+              <div>
+                <span class="block text-xs text-paper-600 uppercase font-mono">Institution</span>
+                <span class="text-paper-900 font-medium">{aboutData.institution}</span>
+                <span class="block text-xs text-paper-600">Majors: {aboutData.majors.join(' & ')}</span>
+              </div>
+            </div>
+
+            <!-- Instagram -->
+            <div class="flex items-start gap-3">
+              <svg class="w-4 h-4 text-artisan-600 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke-width="1.75"></rect>
+                <path stroke-width="1.75" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2" stroke-linecap="round"></line>
+              </svg>
+              <div>
+                <span class="block text-xs text-paper-600 uppercase font-mono">Instagram</span>
+                <a
+                  href={aboutData.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-paper-900 hover:text-artisan-700 transition-colors font-medium"
+                >
+                  {aboutData.instagramHandle}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Jump to Contact Form -->
+          <div class="pt-2 border-t border-artisan-300/60">
+            <a
+              href="#contact"
+              class="w-full py-2.5 px-3 rounded-lg bg-paper-100 hover:bg-paper-200 border border-artisan-300 text-xs font-mono uppercase tracking-wider text-paper-900 transition-colors flex items-center justify-center gap-2 font-medium"
+            >
+              <svg class="w-3.5 h-3.5 text-artisan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+              Send an Inquiry
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Biography, Studio Practice & Focus Areas (7 cols) -->
+      <section class="lg:col-span-7 space-y-10">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-paper-600 font-semibold block mb-2">
+            Artist Biography
+          </span>
+          <h1 class="font-serif text-4xl sm:text-5xl text-paper-900 font-medium tracking-tight">
+            About Aurelia
+          </h1>
+          <p class="mt-2 text-lg text-paper-700 font-sans font-light">
+            Craft Artisan &amp; Visual Artist based in Flagstaff, Arizona
+          </p>
+        </div>
+
+        <!-- Biography Body Copy -->
+        <div class="prose prose-paper max-w-none text-base sm:text-lg text-paper-800 leading-relaxed font-sans space-y-6">
+          {aboutData.bio.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+
+        <!-- Focus Areas -->
+        <div class="pt-6 border-t border-artisan-300 space-y-6">
+          <h2 class="font-serif text-2xl sm:text-3xl text-paper-900 font-medium">
+            Core Disciplines
+          </h2>
+
+          <div class="space-y-4">
+            {aboutData.focusAreas.map((area) => (
+              <div class="bg-paper-50 p-6 rounded-xl border border-artisan-300 shadow-2xs">
+                <h3 class="font-serif text-xl text-paper-900 font-medium mb-2">
+                  {area.title}
+                </h3>
+                <p class="text-sm text-paper-700 font-sans leading-relaxed">
+                  {area.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Artist Statement / Philosophy Quote Callout -->
+        <div class="p-8 rounded-2xl bg-paper-200/60 border-l-4 border-artisan-600">
+          <blockquote class="font-serif text-xl sm:text-2xl text-paper-900 italic leading-snug">
+            &ldquo;Craft is where structural necessity meets tactile storytelling. In theater and sculpture alike, every joint, stitch, and cast surface is an active participant in the illusion.&rdquo;
+          </blockquote>
+          <cite class="block mt-4 text-xs font-mono uppercase tracking-widest text-artisan-600 not-italic font-semibold">
+            &mdash; Aurelia Cosette Sims
+          </cite>
+        </div>
+
+        <!-- Contact Form Section -->
+        <div id="contact" class="scroll-mt-28 bg-paper-50 p-6 sm:p-8 rounded-2xl border border-artisan-300 shadow-2xs space-y-6">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-artisan-600 font-semibold block mb-1">
+              Contact &amp; Inquiries
+            </span>
+            <h2 class="font-serif text-2xl sm:text-3xl text-paper-900 font-medium">
+              Send a Message
+            </h2>
+            <p class="text-sm text-paper-700 font-sans mt-1">
+              For theatrical fabrication inquiries, exhibition opportunities, or bespoke puppet construction, please reach out using the form below.
+            </p>
+          </div>
+
+          <form action="https://formsubmit.co/aurelia.c.sims@gmail.com" method="POST" class="space-y-4">
+            <!-- Anti-Spam & Configuration -->
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_subject" value="New Portfolio Inquiry — Aurelia Cosette Sims" />
+            <input type="text" name="_honey" style="display:none" />
+
+            <!-- Field 1: Your name / Organization -->
+            <div>
+              <label for="contact-name" class="block text-xs font-mono uppercase tracking-wider text-paper-800 font-medium mb-1.5">
+                Your name / Organization <span class="text-artisan-700">*</span>
+              </label>
+              <input
+                type="text"
+                id="contact-name"
+                name="name"
+                required
+                placeholder="Jane Doe or Company / Production Title"
+                class="w-full px-4 py-2.5 rounded-lg bg-paper-100 border border-artisan-300 text-paper-900 placeholder-paper-500 text-sm focus:outline-none focus:ring-2 focus:ring-paper-800 focus:border-paper-800 transition-colors"
+              />
+            </div>
+
+            <!-- Field 2: Your email -->
+            <div>
+              <label for="contact-email" class="block text-xs font-mono uppercase tracking-wider text-paper-800 font-medium mb-1.5">
+                Your email <span class="text-artisan-700">*</span>
+              </label>
+              <input
+                type="email"
+                id="contact-email"
+                name="email"
+                required
+                placeholder="jane@example.com"
+                class="w-full px-4 py-2.5 rounded-lg bg-paper-100 border border-artisan-300 text-paper-900 placeholder-paper-500 text-sm focus:outline-none focus:ring-2 focus:ring-paper-800 focus:border-paper-800 transition-colors"
+              />
+            </div>
+
+            <!-- Field 3: Message -->
+            <div>
+              <label for="contact-message" class="block text-xs font-mono uppercase tracking-wider text-paper-800 font-medium mb-1.5">
+                Message <span class="text-artisan-700">*</span>
+              </label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="5"
+                required
+                placeholder="Details about your production, commission, timeline, or inquiry..."
+                class="w-full px-4 py-2.5 rounded-lg bg-paper-100 border border-artisan-300 text-paper-900 placeholder-paper-500 text-sm focus:outline-none focus:ring-2 focus:ring-paper-800 focus:border-paper-800 transition-colors resize-y"
+              ></textarea>
+            </div>
+
+            <!-- Actions Row: Send Message Button + Download Resume -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-paper-900 text-paper-50 hover:bg-artisan-700 font-medium text-sm transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper-800 cursor-pointer"
+              >
+                <svg class="w-4 h-4 text-paper-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+                Send Message
+              </button>
+
+              <a
+                href="/AureliaS.resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg border border-artisan-400 text-paper-900 hover:bg-paper-200 font-medium text-sm transition-colors"
+              >
+                <svg class="w-4 h-4 text-artisan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Download PDF Resume
+              </a>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  function setupInquiryPrefill() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const piece = urlParams.get('piece');
+    if (piece) {
+      const textarea = document.getElementById('contact-message') as HTMLTextAreaElement | null;
+      if (textarea && !textarea.value) {
+        textarea.value = `Hello Aurelia,\n\nI am inquiring about "${piece}". I would love to learn more regarding details, availability, or fabrication process.\n\nThank you!`;
+      }
+    }
+  }
+
+  setupInquiryPrefill();
+  document.addEventListener('astro:page-load', setupInquiryPrefill);
+</script>

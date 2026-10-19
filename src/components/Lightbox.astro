@@ -1,0 +1,226 @@
+---
+interface Props {
+  images: { src: string; alt: string; caption?: string }[];
+}
+
+const { images } = Astro.props;
+---
+
+<!-- Lightbox Modal Container -->
+<div
+  id="lightbox-modal"
+  class="fixed inset-0 z-50 bg-paper-950/95 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4 sm:p-6"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Image gallery fullscreen preview"
+>
+  <!-- Close Button -->
+  <button
+    id="lightbox-close"
+    type="button"
+    class="absolute top-4 right-4 z-50 text-artisan-300 hover:text-paper-50 p-2.5 rounded-full bg-paper-900/80 hover:bg-paper-800 border border-artisan-700/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-artisan-300 cursor-pointer"
+    aria-label="Close image preview (Escape)"
+  >
+    <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+
+  <!-- Previous Button -->
+  <button
+    id="lightbox-prev"
+    type="button"
+    class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 text-artisan-300 hover:text-paper-50 p-2.5 sm:p-3 rounded-full bg-paper-900/80 hover:bg-paper-800 border border-artisan-700/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-artisan-300 flex items-center justify-center cursor-pointer"
+    aria-label="Previous image (Left arrow key)"
+  >
+    <svg class="w-5 h-5 sm:w-6 sm:h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    </svg>
+  </button>
+
+  <!-- Next Button -->
+  <button
+    id="lightbox-next"
+    type="button"
+    class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-50 text-artisan-300 hover:text-paper-50 p-2.5 sm:p-3 rounded-full bg-paper-900/80 hover:bg-paper-800 border border-artisan-700/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-artisan-300 flex items-center justify-center cursor-pointer"
+    aria-label="Next image (Right arrow key)"
+  >
+    <svg class="w-5 h-5 sm:w-6 sm:h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
+  </button>
+
+  <!-- Image and Caption Box -->
+  <div class="relative max-w-6xl w-full max-h-[90vh] flex flex-col items-center justify-center select-none">
+    <div class="relative max-h-[80vh] w-auto flex items-center justify-center">
+      <img
+        id="lightbox-img"
+        src=""
+        alt=""
+        class="max-h-[78vh] max-w-full object-contain rounded shadow-2xl transition-transform duration-200"
+      />
+    </div>
+
+    <!-- Caption / Counter bar -->
+    <div class="mt-4 text-center px-4 max-w-xl">
+      <p id="lightbox-caption" class="text-sm font-sans text-paper-100 line-clamp-2"></p>
+      <p id="lightbox-counter" class="text-xs text-artisan-300 font-mono mt-1"></p>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ images }}>
+  (function () {
+    const modal = document.getElementById('lightbox-modal');
+    const modalImg = document.getElementById('lightbox-img');
+    const captionEl = document.getElementById('lightbox-caption');
+    const counterEl = document.getElementById('lightbox-counter');
+    const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+
+    let currentIndex = 0;
+
+    function updateLightbox(index) {
+      if (!images || images.length === 0) return;
+      currentIndex = (index + images.length) % images.length;
+      const current = images[currentIndex];
+
+      if (modalImg) {
+        modalImg.src = current.src;
+        modalImg.alt = current.alt || 'Full resolution image';
+      }
+      if (captionEl) {
+        captionEl.textContent = current.caption || current.alt || '';
+      }
+      if (counterEl) {
+        counterEl.textContent = `${currentIndex + 1} / ${images.length}`;
+      }
+
+      if (images.length <= 1) {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+      } else {
+        if (prevBtn) prevBtn.style.display = 'flex';
+        if (nextBtn) nextBtn.style.display = 'flex';
+      }
+    }
+
+    function openLightbox(index) {
+      if (!modal) return;
+      updateLightbox(index);
+      modal.classList.remove('hidden');
+      // Force reflow
+      void modal.offsetWidth;
+      modal.classList.remove('opacity-0');
+      modal.classList.add('opacity-100');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      if (!modal) return;
+      modal.classList.add('opacity-0');
+      modal.classList.remove('opacity-100');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        if (modalImg) modalImg.src = '';
+        document.body.style.overflow = '';
+      }, 200);
+    }
+
+    function prevImage(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      updateLightbox(currentIndex - 1);
+    }
+
+    function nextImage(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      updateLightbox(currentIndex + 1);
+    }
+
+    function handleClose(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      closeLightbox();
+    }
+
+    // Attach click listener to gallery items
+    document.querySelectorAll('[data-lightbox-trigger]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const idx = parseInt(el.getAttribute('data-lightbox-index') || '0', 10);
+        openLightbox(idx);
+      });
+    });
+
+    closeBtn?.addEventListener('click', handleClose);
+    prevBtn?.addEventListener('click', prevImage);
+    nextBtn?.addEventListener('click', nextImage);
+
+    // Click on background closes modal (only when clicking the backdrop, never controls or image content)
+    modal?.addEventListener('click', (e) => {
+      if (
+        e.target.closest('#lightbox-prev') ||
+        e.target.closest('#lightbox-next') ||
+        e.target.closest('#lightbox-close') ||
+        e.target.closest('.select-none')
+      ) {
+        return;
+      }
+      closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!modal || modal.classList.contains('hidden')) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeLightbox();
+      }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevImage();
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextImage();
+      }
+    });
+
+    // Touch swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    modal?.addEventListener(
+      'touchstart',
+      (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      },
+      { passive: true }
+    );
+
+    modal?.addEventListener(
+      'touchend',
+      (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 50) {
+          if (diff < 0) {
+            nextImage();
+          } else {
+            prevImage();
+          }
+        }
+      },
+      { passive: true }
+    );
+  })();
+</script>

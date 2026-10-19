@@ -1,0 +1,31 @@
+{
+  "name": "Aurelia Cosette Sims",
+  "title": "Craft Artisan & Visual Artist",
+  "portraitImage": "/images/about/aurelia-portrait.webp",
+  "portraitAlt": "Aurelia Cosette Sims, craft artisan and visual artist",
+  "location": "Flagstaff, Arizona",
+  "institution": "Northern Arizona University",
+  "majors": ["Technical Theater", "Sculpture"],
+  "email": "aurelia.c.sims@gmail.com",
+  "instagramUrl": "https://instagram.com/aureliacosette",
+  "instagramHandle": "@aureliacosette",
+  "bio": [
+    "Aurelia Sims is a craft artisan and visual artist residing in Flagstaff, Arizona. They are currently a student at Northern Arizona University majoring in Technical Theater and Sculpture.",
+    "Their studio practice bridges traditional craftsmanship, sculptural materiality, and theatrical performance. Skilled across woodworking, welding, ceramics, printmaking, model making, and fabrication techniques, they hold a deep passion for puppet construction and traditional art forms.",
+    "Whether shaping character marionettes, engineering theatrical props for the stage, casting aluminum in the foundry, or pulling relief prints in the studio, Aurelia's work emphasizes tactile honesty, structural ingenuity, and narrative embodiment."
+  ],
+  "focusAreas": [
+    {
+      "title": "Theatrical Crafts & Puppetry",
+      "description": "Designing and building expressive rod puppets, hand puppets, and marionettes engineered with articulated mechanisms, custom armatures, and lightweight performance-ready materials."
+    },
+    {
+      "title": "Sculpture & Foundry",
+      "description": "Translating material studies into physical form through steam-bent woodworking, TIG/MIG steel rod armatures, plaster volumetric casts, and sand-cast aluminum foundry work."
+    },
+    {
+      "title": "Printmaking & Traditional Arts",
+      "description": "Engaging historic print methods including multi-color silkscreen serigraphy, Vandercook letterpress with hand-set type, and relief linocuts on archival cotton papers."
+    }
+  ]
+}
