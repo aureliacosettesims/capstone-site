@@ -1,1 +1,2 @@
-name = "capstone-site"`npages_build_output_dir = "dist"
+name = "capstone-site"
+pages_build_output_dir = "dist"
