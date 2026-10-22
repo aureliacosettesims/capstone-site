@@ -7,10 +7,13 @@
   "education": {
     "institution": "Northern Arizona University",
     "location": "Flagstaff, AZ",
-    "degree": "Bachelor of Arts / Science Candidate",
-    "majors": ["Technical Theater", "Sculpture"],
-    "expectedGraduation": "2026",
-    "notes": "Focused on theatrical craft fabrication, puppet mechanics, structural sculpting, and woodworking."
+    "degree": "Bachelor of Science & Bachelor of Fine Art",
+    "majors": [
+      "Theater",
+      "Studio Art"
+    ],
+    "expectedGraduation": "May 2028",
+    "notes": "Emphasis in Design & Technology and Sculpture"
   },
   "theatricalCredits": [
     {
@@ -21,14 +24,14 @@
           "production": "Lysistrata",
           "year": "2025",
           "venue": "Northern Arizona University – Flagstaff, AZ",
-          "details": "Specialty costume crafts, structural headwear, distress finishing, and wearable accessories."
+          "details": "Specialty costume crafts - Phalloi"
         },
         {
           "role": "Crafts Artisan",
           "production": "BUZZ",
           "year": "2025",
           "venue": "Northern Arizona University – Flagstaff, AZ",
-          "details": "Custom puppet mechanisms, foam fabrication, textile treatments, and articulated props."
+          "details": "Specialty costume crafts - Hornet wings and armor finishing"
         }
       ]
     },
@@ -40,21 +43,21 @@
           "production": "Ghosts of Bogota",
           "year": "2024",
           "venue": "Northern Arizona University – Flagstaff, AZ",
-          "details": "Scenic carpentry, flat construction, timber framing, and stage installation."
+          "details": "Construction of platforms, flats, doorways, and cabinets"
         },
         {
           "role": "Carpenter",
           "production": "Much Ado About Nothing",
           "year": "2024",
           "venue": "Northern Arizona University – Flagstaff, AZ",
-          "details": "Scenic load-in, structural staging platforms, stair units, and shop tool maintenance."
+          "details": "Construction of platforms, flats, windows, and doorways. Assistance in set dressing"
         },
         {
           "role": "Carpenter",
           "production": "Rent",
           "year": "2024",
           "venue": "Northern Arizona University – Flagstaff, AZ",
-          "details": "Multi-tier industrial stage rigging, steel and lumber framing, load-in, and strike."
+          "details": "Construction of platforms, flats, staircases, and railings. Assistance in scenic painting. Run crew during performances"
         }
       ]
     },
@@ -66,14 +69,14 @@
           "production": "Las Pascualas",
           "year": "2023",
           "venue": "Northern Arizona University – Flagstaff, AZ",
-          "details": "Garment construction, alteration fittings, hand embroidery, and historical costume care."
+          "details": "Machine and hand sewing"
         },
         {
           "role": "Stitcher",
           "production": "Holmes and Watson",
           "year": "2023",
           "venue": "Northern Arizona University – Flagstaff, AZ",
-          "details": "Period costume assembly, machine and hand stitching, garment pressing, and quick-change preparation."
+          "details": "Machine and hand sewing"
         }
       ]
     }
@@ -81,31 +84,76 @@
   "skills": [
     {
       "category": "Woodworking",
-      "skills": ["Timber Joinery", "Table Saw & Band Saw", "Wood Lathe Turning", "Steam Bending", "Sanding & Hand Finishing", "Structural Framing"]
+      "skills": [
+        "Timber Joinery",
+        "Table Saw & Band Saw",
+        "Wood Lathe Turning",
+        "Steam Bending",
+        "Sanding & Hand Finishing",
+        "Structural Framing"
+      ]
     },
     {
       "category": "Welding & Metal Fabrication",
-      "skills": ["MIG Welding", "TIG Welding", "Steel Rod Forming", "Sheet Metal Cutting & Bending", "Plasma Torch", "Chemical Patination"]
+      "skills": [
+        "MIG Welding",
+        "TIG Welding",
+        "Steel Rod Forming",
+        "Sheet Metal Cutting & Bending",
+        "Plasma Torch",
+        "Chemical Patination"
+      ]
     },
     {
       "category": "Puppet Construction",
-      "skills": ["Rod Puppet Engineering", "Marionette Rigging", "Hand Puppet Glove Design", "Carved Foam Structures", "Mouth Trigger Mechanisms", "Armature Design"]
+      "skills": [
+        "Rod Puppet Engineering",
+        "Marionette Rigging",
+        "Hand Puppet Glove Design",
+        "Carved Foam Structures",
+        "Mouth Trigger Mechanisms",
+        "Armature Design"
+      ]
     },
     {
       "category": "Ceramics & Casting",
-      "skills": ["Foundry Aluminum Sand-Casting", "Hydrocal Plaster Casting", "Silicone & Alginate Mold Making", "Slip Casting", "Glaze Chemistry"]
+      "skills": [
+        "Foundry Aluminum Sand-Casting",
+        "Hydrocal Plaster Casting",
+        "Silicone & Alginate Mold Making",
+        "Slip Casting",
+        "Glaze Chemistry"
+      ]
     },
     {
       "category": "Printmaking",
-      "skills": ["Screenprint / Serigraphy", "Silkscreen Registration", "Vandercook Letterpress", "Linoleum Relief Carving", "Hand-Inking & Pulling"]
+      "skills": [
+        "Screenprint / Serigraphy",
+        "Silkscreen Registration",
+        "Vandercook Letterpress",
+        "Linoleum Relief Carving",
+        "Hand-Inking & Pulling"
+      ]
     },
     {
       "category": "Costume Crafts & Stitching",
-      "skills": ["Industrial Sewing Machines", "Serger Operation", "Pattern Drafting & Draping", "Wearable Structural Crafts", "Fabric Distressing & Dyeing"]
+      "skills": [
+        "Industrial Sewing Machines",
+        "Serger Operation",
+        "Pattern Drafting & Draping",
+        "Wearable Structural Crafts",
+        "Fabric Distressing & Dyeing"
+      ]
     },
     {
       "category": "Model Making & Drafting",
-      "skills": ["Architectural Scale Models", "Scenic Drafting", "Precision Measurement", "Material Prototyping", "Shop Safety Protocols"]
+      "skills": [
+        "Architectural Scale Models",
+        "Scenic Drafting",
+        "Precision Measurement",
+        "Material Prototyping",
+        "Shop Safety Protocols"
+      ]
     }
   ]
 }
