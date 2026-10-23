@@ -11,14 +11,6 @@ images:
   - "/images/projects/were-all-creatures-detail-3.webp"
   - "/images/projects/were-all-creatures-detail-4.webp"
   - "/images/projects/were-all-creatures-detail-5.webp"
-materials:
-  - "Hand-set lead typography"
-  - "Carved linoleum relief cut"
-  - "Vandercook cylinder press"
-  - "100% cotton Lettra paper"
 order: 11
 featured: true
-statement: "Tactile letterpress print pairing handset metal typography with hand-carved relief illustration, exploring our shared animality and natural embodiment."
 ---
-
-Tactile letterpress print pairing handset metal typography with hand-carved relief illustration, exploring our shared animality and natural embodiment.
