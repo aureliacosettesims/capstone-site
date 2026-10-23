@@ -20,10 +20,6 @@ images:
   - "/images/projects/lysistrata-detail-12.webp"
   - "/images/projects/lysistrata-detail-2.webp"
   - "/images/projects/lysistrata-detail-13.webp"
-
 order: 1
 featured: true
-
 ---
-
-
