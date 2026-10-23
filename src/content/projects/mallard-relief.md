@@ -10,10 +10,6 @@ images:
 materials:
   - "Hand-carved linoleum block"
   - "Oil-based black relief ink"
-  - "Hand-pulled on Japanese Mulberry paper"
 order: 12
 featured: false
-statement: "Relief linocut investigating water ripple distortion and avian plumage texture through directional gouge marks and rhythmic carving strokes."
 ---
-
-Relief linocut investigating water ripple distortion and avian plumage texture through directional gouge marks and rhythmic carving strokes.
